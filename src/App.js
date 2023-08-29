@@ -41,5 +41,5 @@ function App() {
     </div>
   );
 }
-
+// 깃허브 연동하기
 export default App;
