@@ -4,10 +4,10 @@
 
 .header {
   position: relative; /* 이미지 위치 조정을 위해 추가 */
-  background-color: #fff; /* 배경색을 검은색으로 설정 */
-  text-align: center;
-  padding: 10px;
-  color: #000; /* 글자색을 흰색으로 설정, 1필요에 따라 추가 */
+  background-color: #fff; 
+  
+  padding: 40px 140px;
+  color: #000;
   border-bottom: 2px solid #ccc;
 }
 
@@ -19,10 +19,56 @@
   height: auto;  /* 높이는 자동으로 설정 */
 }
 
+.user-address {
+  top: 10px;
+  left: 50px;
+  height: auto;
+
+}
+
+
 #map {
   margin-top: 20px;
 }
 
+
+.add-errand-button {
+  position: absolute;      /* This ensures the button floats on top of other content */
+  top: 150px;               /* Adjust as needed to position from the top */
+  left: 20px;             /* Adjust as needed to position from the right */
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000; 
+}
+
+
+
+
+
+
+
+.hover-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+}
+
+
+.zoom-button-container {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  z-index: 100; /* Optional: To make sure the buttons appear above the map */
+}
+
+.zoom-button {
+  margin: 5px;
+  padding: 10px 20px;
+}
 
 .toggle-button {
   position: absolute;
@@ -43,6 +89,11 @@
   padding: 20px;
   overflow-y: auto;
   box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease-in-out, right 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.right-nav.open {
+  right: 0; /* Slide in the navigation bar when it's open */
 }
 
 .right-nav h2 {
@@ -78,3 +129,4 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
