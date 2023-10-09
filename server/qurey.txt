@@ -24,8 +24,6 @@ CREATE TABLE IF NOT EXISTS `exKU`.`Customer` (
   `csm_birth` VARCHAR(20) NOT NULL,
   `csm_email` VARCHAR(45) NOT NULL,
   `csm_pno` VARCHAR(45) NOT NULL,
-  `csm_gen` VARCHAR(45) NOT NULL,
-  `csm_pt` INT NOT NULL,
   PRIMARY KEY (`csm_id`))
 ENGINE = InnoDB;
 

@@ -13,7 +13,6 @@ function Signup() {
   const [name, setName] = useState('');
   const [birth, setBirth] = useState('');
   const [pNo, setPNo] = useState('');
-  const onSubmit = (data) => console.log(data);
   const handleSignup = (e) => {
     e.preventDefault();
 

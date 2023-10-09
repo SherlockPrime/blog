@@ -20,7 +20,8 @@ const db = mysql.createConnection({
 // 데이터베이스 연결
 db.connect((err) => {
     if(err) {
-        throw err;
+        console.error("MySQL 연결 실패:", err);
+        return;
     }
     console.log('MySQL 연결 성공...');
 });
@@ -28,6 +29,23 @@ db.connect((err) => {
 // 루트 경로로 요청이 들어올 경우 응답
 app.get('/', (req, res) => {
     res.send('서버에서 응답했습니다!');
+});
+
+app.post('/login', (req, res) => {
+    const { csm_id: username, csm_pwd: password } = req.body;
+    const query = 'SELECT * FROM Customer WHERE csm_id = ? AND csm_pwd = ?';
+    
+    db.query(query, [username, password], (err, results) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        
+        if (results.length) {
+            return res.json({ status: 'success', message: 'Login successful!' });
+        } else {
+            return res.json({ status: 'fail', message: 'Invalid username or password!' });
+        }
+    });
 });
 
 app.post('/signup', (req, res) => {
@@ -43,8 +61,10 @@ app.post('/signup', (req, res) => {
         csm_id, csm_pwd, csm_name, csm_pNo, csm_birth, csm_email
     };
 
-    db.query(sql, customer, (err, result) => {
-        if (err) throw err;
+    db.query(sql, customer, (err) => {
+        if (err) {
+            return res.status(500).send({ error: err.message });
+        }
         res.send({ success: true, msg: 'User registered successfully' });
     });
 });
@@ -68,6 +88,10 @@ app.get('/customer/:id', (req, res) => {
 });
 
 // 서버 시작
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ error: 'Something broke!' });
+});
 app.listen(port, () => {
     console.log(`${port} 포트에서 서버가 시작되었습니다.`);
 });

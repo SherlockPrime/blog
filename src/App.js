@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
+// import axios from 'axios';
 
 function App() {
   const [isNavOpen, setNavOpen] = useState(false);
@@ -104,6 +105,49 @@ const zoomOut = () => {
     setPassword("");
   };
 
+  /* const handleLogin = () => {
+    axios.post('http://localhost:3001/login', {
+      csm_id: username,
+      csm_pwd: password
+    }).then(response => {
+        if (response.data.status === 'success') {
+            setIsLoggedIn(true);
+        } else {
+            alert(response.data.message);
+        }
+    }).catch(error => {
+        console.error("There was an error!", error);
+    });
+};
+*/
+
+
+ const handleLogin = () => {
+  fetch('http://localhost:3001/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    csm_id: username,
+    csm_pwd: password
+  })
+})
+.then(response => response.json())
+
+.then(data => {
+  console.log("Login response data:", data);
+  if (data.status === 'success') {
+    setIsLoggedIn(true);
+  } else {
+    alert(data.message);
+  }
+})
+.catch(error => {
+  console.error("There was an error!", error);
+});
+ };
+
   return (
     <div className="App">
       <div className="header">
@@ -115,27 +159,27 @@ const zoomOut = () => {
         {isNavOpen ? 'Close Nav' : 'Open Nav'}
       </button>
       {isNavOpen && (
-        <div className="right-nav">
-          <h2>Login</h2>
-          {!isLoggedIn ? (
-            <div className="login-form">
-              <input type="text" placeholder="아이디" value={username} onChange={(e) => setUsername(e.target.value)} />
-              <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button onClick={() => setIsLoggedIn(true)}>로그인</button>
-              <Link to="/signup" className="signup-text">회원가입</Link>
-            </div>
-          ) : (
-            <div>
-              <ul>
-                <li>Home</li>
-                <li>About</li>
-                <li>Contact</li>
-              </ul>
-              <button onClick={handleLogout}>로그아웃</button>
-            </div>
-          )}
-        </div>
-      )}
+  <div className="right-nav">
+    <h2>Login</h2>
+    {!isLoggedIn ? (
+      <div className="login-form">
+        <input type="text" placeholder="아이디" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button onClick={handleLogin}>로그인</button>
+        <Link to="/signup" className="signup-text">회원가입</Link>
+      </div>
+    ) : (
+      <div>
+        <ul>
+          <li>Home</li>
+          <li>About</li>
+          <li>Contact</li>
+        </ul>
+        <button onClick={handleLogout}>로그아웃</button>
+      </div>
+    )}
+  </div>
+)}
       <div id="map" style={{ width: '100%', height: '80vh' }}>
       </div>
       <button className="add-errand-button">심부름 추가하기</button>
