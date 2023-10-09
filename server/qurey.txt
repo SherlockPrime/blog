@@ -1,0 +1,120 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema exKU
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema exKU
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `exKU` DEFAULT CHARACTER SET utf8 ;
+USE `exKU` ;
+
+-- -----------------------------------------------------
+-- Table `exKU`.`Customer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exKU`.`Customer` (
+  `csm_id` VARCHAR(20) NOT NULL,
+  `csm_pwd` VARCHAR(45) NOT NULL,
+  `csm_name` VARCHAR(45) NOT NULL,
+  `csm_birth` VARCHAR(20) NOT NULL,
+  `csm_email` VARCHAR(45) NOT NULL,
+  `csm_pno` VARCHAR(45) NOT NULL,
+  `csm_gen` VARCHAR(45) NOT NULL,
+  `csm_pt` INT NOT NULL,
+  PRIMARY KEY (`csm_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exKU`.`Charge`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exKU`.`Charge` (
+  `crg_no` INT NOT NULL AUTO_INCREMENT,
+  `crg_time` DATETIME NULL,
+  `crg_amount` INT NULL,
+  `Customer_csm_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`crg_no`),
+  INDEX `fk_Charge_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Charge_Customer1`
+    FOREIGN KEY (`Customer_csm_id`)
+    REFERENCES `exKU`.`Customer` (`csm_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exKU`.`Errand_ Post`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exKU`.`Errand_ Post` (
+  `ernd_no` INT NOT NULL,
+  `ernd_cat` VARCHAR(45) NULL,
+  `ernd_pos` VARCHAR(45) NULL,
+  `ernd_rew` VARCHAR(45) NULL,
+  `ernd_vtime` VARCHAR(45) NULL,
+  `ernd_title` VARCHAR(45) NULL,
+  `ernd_det` VARCHAR(45) NULL,
+  `csm_id` VARCHAR(45) NULL,
+  `Customer_csm_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`ernd_no`),
+  INDEX `fk_Errand_ Post_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Errand_ Post_Customer1`
+    FOREIGN KEY (`Customer_csm_id`)
+    REFERENCES `exKU`.`Customer` (`csm_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exKU`.`Comment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exKU`.`Comment` (
+  `comm_det` INT NOT NULL,
+  `comm_time` DATETIME NOT NULL,
+  `Customer_csm_id` VARCHAR(20) NOT NULL,
+  `Errand_ Post_ernd_no` INT NOT NULL,
+  PRIMARY KEY (`comm_det`),
+  INDEX `fk_Comment_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
+  INDEX `fk_Comment_Errand_ Post1_idx` (`Errand_ Post_ernd_no` ASC) VISIBLE,
+  CONSTRAINT `fk_Comment_Customer1`
+    FOREIGN KEY (`Customer_csm_id`)
+    REFERENCES `exKU`.`Customer` (`csm_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Comment_Errand_ Post1`
+    FOREIGN KEY (`Errand_ Post_ernd_no`)
+    REFERENCES `exKU`.`Errand_ Post` (`ernd_no`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `exKU`.`QnA`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exKU`.`QnA` (
+  `qna_no` INT NOT NULL AUTO_INCREMENT,
+  `qna_det` VARCHAR(45) NULL,
+  `qna_wtr` VARCHAR(45) NULL,
+  `qna_ans` VARCHAR(45) NULL,
+  `qna_time` DATETIME NULL,
+  `Customer_csm_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`qna_no`),
+  INDEX `fk_QnA_Customer_idx` (`Customer_csm_id` ASC) VISIBLE,
+  CONSTRAINT `fk_QnA_Customer`
+    FOREIGN KEY (`Customer_csm_id`)
+    REFERENCES `exKU`.`Customer` (`csm_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
