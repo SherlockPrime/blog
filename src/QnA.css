@@ -1,0 +1,58 @@
+.home-button {
+    display: inline-block;
+    margin-top: 100px;  /* 위치 아래로 내림 */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+  
+    /* 버튼 중앙 위치 */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .home-button:hover {
+    background-color: #0056b3;
+  }
+
+  table {
+    width: 100%;  /* 표의 너비를 부모 요소에 맞춤 */
+    border-collapse: collapse;  /* 테이블의 경계와 셀 경계가 합쳐짐 */
+    margin-top: 20px;
+  }
+  
+  th, td {
+    border: 1px solid black;  /* 셀의 윤곽선 */
+    padding: 10px;  /* 셀 안의 패딩 */
+    text-align: left;  /* 텍스트 정렬 */
+  }
+  
+  th {
+    background-color: #f2f2f2;  /* 헤더 셀의 배경색 */
+  }
+
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .inquiry-button {
+    padding: 12px 35px;
+    margin: 0;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .inquiry-button:hover {
+    background-color: darkblue;
+  }
+
+  .header-section h2 {
+    font-size: 30px; /* 원하는 크기로 설정 */
+  }
