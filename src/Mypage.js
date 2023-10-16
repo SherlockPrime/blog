@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Mypage.css';
 
-const MyPage = () => {
+const Mypage = () => {
 
   return (
     <div className="my-page">
@@ -26,7 +26,7 @@ const MyPage = () => {
           </tr>
           <tr>
             <td>
-              <Link to="/activity4">포인트 충전</Link>
+              <Link to="/Pay">포인트 충전</Link>
             </td>
           </tr>
         </tbody>
@@ -36,4 +36,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default Mypage;

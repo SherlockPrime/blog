@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes  } from 'react-router-dom';
 import App from './App';
 import Signup from './Signup';
-import Mypage from './Mypage';
+import Profile from './Profile';
+import Pay from './Pay';
 // import Profile from './Profile';
 
 // 루트 요소를 찾기.
@@ -19,28 +20,15 @@ if (rootElement) {
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<App />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/pay" element={<Pay />} />
+        
       </Routes>
     </Router>
   );
 
 
-  /*
-  root.render(
-    <Router>
-      <Routes>
-        <Route path="/profile" element={<profile />} />
-        <Route path="/" element={<App />} />
-      </Routes>
-    </Router>
-  );
-*/
-  root.render(
-    <Router>
-      <Routes>
-        <Route path="/Mypage" element={<Mypage />} />
-        <Route path="/" element={<App />} />
-      </Routes>
-    </Router>
-  );
+
+
 }
 

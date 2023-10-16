@@ -130,3 +130,27 @@
   cursor: pointer;
 }
 
+.profile-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-picture {
+  width: 100px; /* 프로필 사진 크기 */
+  height: auto;
+  border-radius: 50%; /* 원형 */
+}
+
+.profile-points {
+  margin-right: 1000px;
+  margin-top: -25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.profile-name {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+

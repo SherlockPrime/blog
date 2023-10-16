@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
+
 // import axios from 'axios';
 
 function App() {
@@ -186,13 +187,13 @@ const handleLogout = () => {
         <input type="text" placeholder="아이디" value={username} onChange={(e) => setUsername(e.target.value)} onKeyPress={handleKeyPress}/>
         <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} onKeyPress={handleKeyPress}/>
         <button onClick={handleLogin}>로그인</button>
-        <Link to="/signup" className="signup-text">회원가입</Link>
+        <Link to="/Signup" className="signup-text">회원가입</Link>
       </div>
       </div>
     ) : (
       <div>
         <ul>
-          <li><Link to="/mypage">My Page</Link></li>
+          <li><Link to = "/Profile">My Page</Link></li>
           <li>심부름 목록</li>
           <li>문의사항</li>
         </ul>
