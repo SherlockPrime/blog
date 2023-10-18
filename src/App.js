@@ -13,6 +13,9 @@ function App() {
   const [map, setMap] = useState(null); // 카카오 맵 객체
   const [marker, setMarker] = useState(null); // 지도 상의 마커 객체
   const [userAddress, setUserAddress] = useState("Getting location..."); // 사용자의 주소
+  const [ernd_pos, setErndPos] = useState(null);
+
+  const [isAddingErrand, setIsAddingErrand] = useState(false);
 
   // 현재 사용자의 위도와 경도를 기반으로 주소를 가져오는 함수
   const getGeoLocation = (lat, lon) => {
@@ -90,6 +93,41 @@ function App() {
     
   }, []);
 
+  const handleMapClick = (mouseEvent) => {
+    // Get latitude and longitude from the mouseEvent
+    const latlng = mouseEvent.latLng;
+  
+    // Check if marker already exists
+    if (marker) {
+      // Update marker's position
+      marker.setPosition(latlng);
+    } else {
+      // Create a new marker
+      const newMarker = new window.kakao.maps.Marker({
+        map: map,
+        position: latlng
+      });
+      setMarker(newMarker); // Save the new marker in the state
+    }
+  
+    // Update the ernd_pos state
+    setErndPos({lat: latlng.getLat(), lng: latlng.getLng()});
+    // Optionally, update the address displayed to the user
+    getGeoLocation(latlng.getLat(), latlng.getLng());
+  };
+
+  const addErrand = () => {
+    setIsAddingErrand(true); // 심부름 추가 모드 활성화
+    if (marker) {
+      window.kakao.maps.event.removeListener(map, 'click', handleMapClick);
+    }
+    window.kakao.maps.event.addListener(map, 'click', handleMapClick);
+  };
+
+  const confirmLocation = () => {
+    setIsAddingErrand(false); // 심부름 추가 모드 비활성화
+    // 이 위치로 주소 설정 및 다른 로직 구현
+  };
 
 // 지도 확대
 const zoomIn = () => {
@@ -116,22 +154,6 @@ const zoomOut = () => {
       handleLogin();
     }
   }
-
-  /* const handleLogin = () => {
-    axios.post('http://localhost:3001/login', {
-      csm_id: username,
-      csm_pwd: password
-    }).then(response => {
-        if (response.data.status === 'success') {
-            setIsLoggedIn(true);
-        } else {
-            alert(response.data.message);
-        }
-    }).catch(error => {
-        console.error("There was an error!", error);
-    });
-};
-*/
 
 // 로그인 처리
  const handleLogin = () => {
@@ -174,6 +196,7 @@ const handleLogout = () => {
         <img src="./logo1.png" alt="Header" className="logo" />
         
         <div className="user-address">{userAddress}</div>
+        {isAddingErrand && <div className="confirm-box">지도에서 위치 확인</div>}
       </div>
       <button className="toggle-button" onClick={toggleNav}>
         {isNavOpen ? 'Close Nav' : 'Open Nav'}
@@ -204,9 +227,19 @@ const handleLogout = () => {
 )}
       <div id="map" style={{ width: '100%', height: '80vh' }}>
       </div>
-      {isLoggedIn && ( // 로그인 상태일 때만 버튼이 보이도록 조건부 렌더링 사용
-      <button className="add-errand-button">심부름 추가하기</button>
-    )}
+      {isLoggedIn && !isAddingErrand && ( // 로그인 상태이며, 심부름 추가 모드가 아닐 때
+        <button className="add-errand-button" onClick={addErrand}>심부름 추가하기</button>
+      )}
+
+      {isAddingErrand && ( // 심부름 추가 모드일 때
+        <>
+          <div className="selected-position">
+            선택된 위치: {ernd_pos ? `위도: ${ernd_pos.lat}, 경도: ${ernd_pos.lng}` : '위치를 선택하세요'}
+          </div>
+          <button className="confirm-location-button" onClick={confirmLocation}>이 위치로 주소 설정</button>
+        </>
+      )}
+      {!isAddingErrand && ( // 심부름 추가 모드가 아닐 때만 버튼 표시
       <div className="zoom-button-container">
         <button className="zoom-button" onClick={zoomIn}>줌 인</button>
         <button className="zoom-button" onClick={zoomOut}>줌 아웃</button>
@@ -214,7 +247,7 @@ const handleLogout = () => {
           내 위치
         </button>
       </div>
-      
+      )}
     </div>
   );
 }

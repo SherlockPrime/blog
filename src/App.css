@@ -154,3 +154,16 @@
   font-weight: bold;
 }
 
+.confirm-location-button {
+  background-color: transparent; /* Transparent background */
+  border: 2px solid #000; /* Add border, you can change color as needed */
+  color: #000; /* Text color, you can change as needed */
+  padding: 10px 20px; /* Padding for top/bottom, left/right */
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px; /* External margins */
+  cursor: pointer; /* Cursor changes to hand icon when you hover over it */
+  border-radius: 4px; /* Rounded corners */
+}
+

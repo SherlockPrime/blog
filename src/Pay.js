@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // 서버와 통신하기 위해 axios를 사용합니다.
-
 
 const Pay = () => {
     const [amount, setAmount] = useState(''); // 사용자가 지불할 금액
@@ -9,9 +7,21 @@ const Pay = () => {
     const handlePayment = async () => {
         try {
             // 서버에 결제를 요청합니다. 서버는 카카오페이 API를 호출하여 결제 URL을 받아와야 합니다.
-            const response = await axios.post('/api/kakaopay/payment', { amount: amount });
-            const paymentUrl = response.data.next_redirect_pc_url; // 카카오페이로 리다이렉트할 URL
-            
+            const response = await fetch('/api/kakaopay/payment', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ amount: amount }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const result = await response.json();
+            const paymentUrl = result.next_redirect_pc_url; // 카카오페이로 리다이렉트할 URL
+
             // 카카오페이 결제 페이지로 사용자를 리다이렉트합니다.
             window.location.href = paymentUrl;
         } catch (error) {
