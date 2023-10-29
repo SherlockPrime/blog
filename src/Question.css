@@ -1,119 +1,119 @@
 .Question {
-    position: relative;
-  }
-  
-  .header {
-    position: relative; /* 이미지 위치 조정을 위해 추가 */
-    background-color: #fff; /* 배경색을 검은색으로 설정 */
-    text-align: center;
-    padding: 10px;
-    color: #000; /* 글자색을 흰색으로 설정, 1필요에 따라 추가 */
-    border-bottom: 2px solid #ccc;
-  }
-  
-  .logo {
-    position: absolute;  /* 절대 위치 */
-    top: 15px;  /* 위에서 10px */
-    left: 20px;  /* 왼쪽에서 10px */
-    width: 80px;  /* 넓이 50px */
-    height: auto;  /* 높이는 자동으로 설정 */
-  }
-  
-  #map {
-    margin-top: 20px;
-  }
-  
-  
-  .toggle-button {
-    position: absolute;
-    top: 40px;
-    right: 80px;
-    z-index: 100;
-    cursor: pointer;
-  }
-  
-  .right-nav {
-    position: fixed;
-    top: 105px;
-    right: 0;
-    width: 300px;
-    height: 100%;
-    background-color: #f2f2f2;
-    z-index: 50;
-    padding: 20px;
-    overflow-y: auto;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .right-nav h2 {
-    margin-top: 0;
-  }
-  
-  .right-nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .right-nav li {
-    margin-bottom: 10px;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .login-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .login-form button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .my-page ul li {
-    cursor: pointer;
-  }
-  
-  .activity-detail {
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-  
-  .profile-section {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .profile-picture {
-    width: 100px; /* 프로필 사진 크기 */
-    height: auto;
-    border-radius: 50%; /* 원형 */
-  }
-  
-  .profile-points { /* 보유포인트 */
-    margin-right: 1350px;
-    margin-top: -25px;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .profile-name {  /* 마이페이지 아이디 */
-    margin-top: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .toggle-button i.fa { /* 메뉴 아이콘 크기 */
-    font-size: 35px;
-  }
+  position: relative;
+}
+
+.header {
+  position: relative; /* 이미지 위치 조정을 위해 추가 */
+  background-color: #fff; /* 배경색을 검은색으로 설정 */
+  text-align: center;
+  padding: 10px;
+  color: #000; /* 글자색을 흰색으로 설정, 1필요에 따라 추가 */
+  border-bottom: 2px solid #ccc;
+}
+
+.logo {
+  position: absolute;  /* 절대 위치 */
+  top: 15px;  /* 위에서 10px */
+  left: 20px;  /* 왼쪽에서 10px */
+  width: 80px;  /* 넓이 50px */
+  height: auto;  /* 높이는 자동으로 설정 */
+}
+
+#map {
+  margin-top: 20px;
+}
+
+
+.toggle-button {
+  position: absolute;
+  top: 40px;
+  right: 80px;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.right-nav {
+  position: fixed;
+  top: 105px;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background-color: #f2f2f2;
+  z-index: 50;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.right-nav h2 {
+  margin-top: 0;
+}
+
+.right-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.right-nav li {
+  margin-bottom: 10px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.my-page ul li {
+  cursor: pointer;
+}
+
+.activity-detail {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.profile-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-picture {
+  width: 100px; /* 프로필 사진 크기 */
+  height: auto;
+  border-radius: 50%; /* 원형 */
+}
+
+.profile-points { /* 보유포인트 */
+  margin-right: 1350px;
+  margin-top: -25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.profile-name {  /* 마이페이지 아이디 */
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.toggle-button i.fa { /* 메뉴 아이콘 크기 */
+  font-size: 35px;
+}

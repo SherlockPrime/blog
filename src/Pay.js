@@ -6,11 +6,10 @@ const Pay = () => {
 
     const handlePayment = async () => {
         try {
-            // 서버에 결제를 요청합니다. 서버는 카카오페이 API를 호출하여 결제 URL을 받아와야 합니다.
-            const response = await fetch('/api/kakaopay/payment', { 
+            const response = await fetch('http://localhost:3001/payment/ready', { 
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ amount: amount }),
             });
@@ -20,9 +19,7 @@ const Pay = () => {
             }
 
             const result = await response.json();
-            const paymentUrl = result.next_redirect_pc_url; // 카카오페이로 리다이렉트할 URL
-
-            // 카카오페이 결제 페이지로 사용자를 리다이렉트합니다.
+            const paymentUrl = result.next_redirect_pc_url;
             window.location.href = paymentUrl;
         } catch (error) {
             console.error("결제 에러:", error);
@@ -30,15 +27,35 @@ const Pay = () => {
     };
 
     const convertToPoints = (amount) => {
-        // 결제 금액에 따라 포인트를 계산하는 로직입니다. 실제 비즈니스 규칙에 따라 수정이 필요할 수 있습니다.
         return amount * 1; // 예: 1원 = 1포인트
     };
 
     const handleSuccessPayment = (amount) => {
-        // 결제가 성공한 경우 호출되는 함수입니다. 
-        // 여기서는 단순화된 예시로, 실제로는 서버에서 결제 검증 후 이 함수를 호출해야 합니다.
         const newPoints = convertToPoints(amount);
         setPoints(prevPoints => prevPoints + newPoints);
+    };
+
+    const handlePaymentSuccess = async () => {
+        try {
+            const response = await fetch('http://localhost:3001/payment/confirm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({}),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            if (data.status === "success") {
+                handleSuccessPayment(amount);
+            }
+        } catch (error) {
+            console.error("결제 확인 에러:", error);
+        }
     };
 
     return (

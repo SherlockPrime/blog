@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
-
+import axios from 'axios';
 // import axios from 'axios';
 
 function App() {
@@ -14,9 +14,15 @@ function App() {
   const [marker, setMarker] = useState(null); // 지도 상의 마커 객체
   const [userAddress, setUserAddress] = useState("Getting location..."); // 사용자의 주소
   const [ernd_pos, setErndPos] = useState(null);
+  const currentTime = new Date(); // 현재 시간을 가져옵니다.
+  let statusMessage = ""; // 상태 메시지를 저장할 변수를 선언합니다.
 
+
+  const [errandPosts, setErrandPosts] = useState([]);
   const [isAddingErrand, setIsAddingErrand] = useState(false);
-
+  const mapContainer = useRef(null);
+  const mapRef = useRef(null);
+  
   // 현재 사용자의 위도와 경도를 기반으로 주소를 가져오는 함수
   const getGeoLocation = (lat, lon) => {
     const geocoder = new window.kakao.maps.services.Geocoder();
@@ -90,8 +96,65 @@ function App() {
         getGeoLocation(lat, lon); // Update address initially
       });
     }
-    
+
   }, []);
+
+
+  useEffect(() => {
+    if (!isAddingErrand && map && isLoggedIn) {
+      // 게시물 데이터 로드 로직
+      axios.get('http://localhost:3001/posts').then(response => {
+        const data = response.data;
+        for (let i = 0; i < data.length; i++) {
+          const position = new window.kakao.maps.LatLng(data[i].ernd_lat, data[i].ernd_lng);
+          const marker = new window.kakao.maps.Marker({
+            position
+          });
+          marker.setMap(map);
+          
+          // InfoWindow에 들어갈 내용을 만들기 위한 변수 초기화
+          let contentString = `<div style="white-space: nowrap; overflow: visible;">`;
+          contentString += `<div>카테고리 : ${data[i].ernd_cat}</div>`;
+          contentString += `<div>${data[i].ernd_title}</div>`;
+          contentString += `<div>보상 : \\ ${data[i].ernd_rew}</div>`;
+
+          // 현재 시간과 ernd_vtime을 비교
+          const currentTime = new Date().getTime();
+          const erndVtime = new Date(data[i].ernd_vtime).getTime();
+
+
+          if (currentTime > erndVtime) {
+            contentString += "<div style='color: gray;'>기한 만료</div>";
+        } else if (data[i].ernd_acpt === 1) {
+            contentString += "<div style='color: red;'>심부름 완료</div>";
+        } else if (data[i].Customer_csm_id !== null) {
+            contentString += "<div style='color: green;'>심부름 진행중</div>";
+        } else {
+            contentString += "<div style='color: blue;'>심부름 진행 가능</div>";
+        }
+
+
+          const infowindow = new window.kakao.maps.InfoWindow({
+            content: contentString
+          });
+          window.kakao.maps.event.addListener(marker, 'click', function() {
+            // 클릭했을 때, 해당 게시물의 상세 페이지로 이동하는 로직
+            window.location.href = `/post/${data[i].ernd_no}`;
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseover', function() {
+            infowindow.open(map, marker);
+          });
+          window.kakao.maps.event.addListener(marker, 'mouseout', function() {
+            infowindow.close();
+          });
+        }
+      }).catch(error => {
+        console.error("Error fetching posts:", error);
+      });
+    }
+  }, [isAddingErrand, map, isLoggedIn]);
+
+  
 
   const handleMapClick = (mouseEvent) => {
     // Get latitude and longitude from the mouseEvent
@@ -126,7 +189,14 @@ function App() {
 
   const confirmLocation = () => {
     setIsAddingErrand(false); // 심부름 추가 모드 비활성화
-    // 이 위치로 주소 설정 및 다른 로직 구현
+     const lat = ernd_pos ? ernd_pos.lat : null;
+    const lng = ernd_pos ? ernd_pos.lng : null;
+
+  if(lat && lng) {
+    window.location.href = `https://localhost:3000/Errand_reg?address=${encodeURIComponent(userAddress)}&lat=${lat}&lng=${lng}`;
+  } else {
+    alert("위치를 선택해주세요.");
+  }
   };
 
 // 지도 확대
@@ -174,6 +244,7 @@ const zoomOut = () => {
   if (data.status === 'success') {
     localStorage.setItem("isLoggedIn", true);
     setIsLoggedIn(true);
+    document.cookie = "id=" + username + "; path=/"
   } else {
     alert(data.message);
   }
@@ -184,11 +255,19 @@ const zoomOut = () => {
 };
 
 const handleLogout = () => {
+  
   localStorage.removeItem("isLoggedIn");
   setIsLoggedIn(false);
   setUsername("");
   setPassword("");
+  document.cookie = "id=" + "" + "; path=/"
 };
+
+function getCookie(name) {
+  var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return value? value[2] : null;
+}
+
 
   return (
     <div className="App">
@@ -216,9 +295,11 @@ const handleLogout = () => {
     ) : (
       <div>
         <ul>
+          <li>{getCookie('id')} 님 안녕하세요</li>
+          <br></br>
           <li><Link to = "/Profile">My Page</Link></li>
-          <li>심부름 목록</li>
-          <li>문의사항</li>
+          <li><Link to = "/Errandlist">심부름 목록</Link></li>
+          <li><Link to = "/QnaList">문의사항</Link></li>
         </ul>
         <button onClick={handleLogout}>로그아웃</button>
       </div>
@@ -228,15 +309,17 @@ const handleLogout = () => {
       <div id="map" style={{ width: '100%', height: '80vh' }}>
       </div>
       {isLoggedIn && !isAddingErrand && ( // 로그인 상태이며, 심부름 추가 모드가 아닐 때
-        <button className="add-errand-button" onClick={addErrand}>심부름 추가하기</button>
+        <button className="add-errand-button" onClick={addErrand}>심부름 추가하기</button> 
       )}
-
+      {isLoggedIn && isAddingErrand && ( // 로그인 상태이며, 심부름 추가 모드일 떄
+        <button className="add-errand-button" onClick={() => setIsAddingErrand(false)}>심부름 추가 모드 취소</button> 
+      )}
       {isAddingErrand && ( // 심부름 추가 모드일 때
         <>
           <div className="selected-position">
             선택된 위치: {ernd_pos ? `위도: ${ernd_pos.lat}, 경도: ${ernd_pos.lng}` : '위치를 선택하세요'}
           </div>
-          <button className="confirm-location-button" onClick={confirmLocation}>이 위치로 주소 설정</button>
+          <button className="confirm-location-button" onClick={confirmLocation}>이 위치로 심부름 등록하기</button>
         </>
       )}
       {!isAddingErrand && ( // 심부름 추가 모드가 아닐 때만 버튼 표시

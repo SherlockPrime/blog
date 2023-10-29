@@ -5,112 +5,111 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema exKU
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema exku
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema exKU
+-- Schema exku
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `exKU` DEFAULT CHARACTER SET utf8 ;
-USE `exKU` ;
+CREATE SCHEMA IF NOT EXISTS `exku` DEFAULT CHARACTER SET utf8mb3 ;
+USE `exku` ;
 
 -- -----------------------------------------------------
--- Table `exKU`.`Customer`
+-- Table `exku`.`customer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `exKU`.`Customer` (
+CREATE TABLE IF NOT EXISTS `exku`.`customer` (
   `csm_id` VARCHAR(20) NOT NULL,
   `csm_pwd` VARCHAR(45) NOT NULL,
   `csm_name` VARCHAR(45) NOT NULL,
   `csm_birth` VARCHAR(20) NOT NULL,
   `csm_email` VARCHAR(45) NOT NULL,
   `csm_pno` VARCHAR(45) NOT NULL,
+  `csm_pt` INT NOT NULL DEFAULT '0',
   PRIMARY KEY (`csm_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `exKU`.`Charge`
+-- Table `exku`.`charge`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `exKU`.`Charge` (
-  `crg_no` INT NOT NULL AUTO_INCREMENT,
-  `crg_time` DATETIME NULL,
-  `crg_amount` INT NULL,
-  `Customer_csm_id` VARCHAR(20) NOT NULL,
+CREATE TABLE `charge` (
+  `crg_no` int NOT NULL AUTO_INCREMENT,
+  `crg_time` datetime DEFAULT NULL,
+  `crg_amount` int DEFAULT NULL,
+  `Customer_csm_id` varchar(20) NOT NULL,
+  `tid` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`crg_no`),
-  INDEX `fk_Charge_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Charge_Customer1`
-    FOREIGN KEY (`Customer_csm_id`)
-    REFERENCES `exKU`.`Customer` (`csm_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_Charge_Customer1_idx` (`Customer_csm_id`),
+  CONSTRAINT `fk_Charge_Customer1` FOREIGN KEY (`Customer_csm_id`) REFERENCES `customer` (`csm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `exKU`.`Errand_ Post`
+-- Table `exku`.`comment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `exKU`.`Errand_ Post` (
-  `ernd_no` INT NOT NULL,
-  `ernd_cat` VARCHAR(45) NULL,
-  `ernd_pos` VARCHAR(45) NULL,
-  `ernd_rew` VARCHAR(45) NULL,
-  `ernd_vtime` VARCHAR(45) NULL,
-  `ernd_title` VARCHAR(45) NULL,
-  `ernd_det` VARCHAR(45) NULL,
-  `csm_id` VARCHAR(45) NULL,
+CREATE TABLE IF NOT EXISTS `exku`.`comment` (
+  `comm_det` INT NOT NULL AUTO_INCREMENT,
+  `comm_time` DATETIME NOT NULL,
   `Customer_csm_id` VARCHAR(20) NOT NULL,
+  `comm_content` VARCHAR(300) NULL DEFAULT NULL,
+  `comm_rec_id` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`comm_det`),
+  INDEX `fk_Comment_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Comment_Customer1`
+    FOREIGN KEY (`Customer_csm_id`)
+    REFERENCES `exku`.`customer` (`csm_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 9
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `exku`.`errandpost`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `exku`.`errandpost` (
+  `ernd_no` INT NOT NULL AUTO_INCREMENT,
+  `ernd_cat` VARCHAR(45) NULL DEFAULT NULL,
+  `ernd_pos` VARCHAR(45) NULL DEFAULT NULL,
+  `ernd_rew` INT NULL DEFAULT NULL,
+  `ernd_vtime` DATETIME NULL DEFAULT NULL,
+  `ernd_title` VARCHAR(45) NULL DEFAULT NULL,
+  `ernd_det` VARCHAR(1000) NULL DEFAULT NULL,
+  `csm_id` VARCHAR(45) NULL DEFAULT NULL,
+  `Customer_csm_id` VARCHAR(20) NULL DEFAULT NULL,
+  `ernd_acpt` TINYINT NULL DEFAULT '0',
+  `ernd_lat` DOUBLE NULL DEFAULT NULL,
+  `ernd_lng` DOUBLE NULL DEFAULT NULL,
   PRIMARY KEY (`ernd_no`),
   INDEX `fk_Errand_ Post_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
   CONSTRAINT `fk_Errand_ Post_Customer1`
     FOREIGN KEY (`Customer_csm_id`)
-    REFERENCES `exKU`.`Customer` (`csm_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `exku`.`customer` (`csm_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 47
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `exKU`.`Comment`
+-- Table `exku`.`qna`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `exKU`.`Comment` (
-  `comm_det` INT NOT NULL,
-  `comm_time` DATETIME NOT NULL,
-  `Customer_csm_id` VARCHAR(20) NOT NULL,
-  `Errand_ Post_ernd_no` INT NOT NULL,
-  PRIMARY KEY (`comm_det`),
-  INDEX `fk_Comment_Customer1_idx` (`Customer_csm_id` ASC) VISIBLE,
-  INDEX `fk_Comment_Errand_ Post1_idx` (`Errand_ Post_ernd_no` ASC) VISIBLE,
-  CONSTRAINT `fk_Comment_Customer1`
-    FOREIGN KEY (`Customer_csm_id`)
-    REFERENCES `exKU`.`Customer` (`csm_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Comment_Errand_ Post1`
-    FOREIGN KEY (`Errand_ Post_ernd_no`)
-    REFERENCES `exKU`.`Errand_ Post` (`ernd_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `exKU`.`QnA`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `exKU`.`QnA` (
+CREATE TABLE IF NOT EXISTS `exku`.`qna` (
   `qna_no` INT NOT NULL AUTO_INCREMENT,
-  `qna_det` VARCHAR(45) NULL,
-  `qna_wtr` VARCHAR(45) NULL,
-  `qna_ans` VARCHAR(45) NULL,
-  `qna_time` DATETIME NULL,
+  `qna_det` VARCHAR(45) NULL DEFAULT NULL,
+  `qna_ans` VARCHAR(45) NULL DEFAULT NULL,
+  `qna_time` DATETIME NULL DEFAULT NULL,
   `Customer_csm_id` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`qna_no`),
   INDEX `fk_QnA_Customer_idx` (`Customer_csm_id` ASC) VISIBLE,
   CONSTRAINT `fk_QnA_Customer`
     FOREIGN KEY (`Customer_csm_id`)
-    REFERENCES `exKU`.`Customer` (`csm_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `exku`.`customer` (`csm_id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 10
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
