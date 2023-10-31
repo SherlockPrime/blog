@@ -6,49 +6,48 @@
   position: relative; /* 이미지 위치 조정을 위해 추가 */
   background-color: #fff; 
   
-  padding: 40px 140px;
+  padding: 50px 140px;
   color: #000;
   border-bottom: 2px solid #ccc;
 }
 
 .logo {
-  position: absolute;  /* 절대 위치 */
-  top: 15px;  /* 위에서 10px */
-  left: 20px;  /* 왼쪽에서 10px */
-  width: 80px;  /* 넓이 50px */
-  height: auto;  /* 높이는 자동으로 설정 */
+  position: absolute;  
+  top: 8px;  
+  left: 10px;  
+  width: 100px;  
+  height: auto;  
 }
 
+/* 메인화면 주소 텍스트 */
 .user-address {
-  top: 10px;
-  left: 50px;
+  top: 15px;
+  left: 100px;
   height: auto;
-
+  font-size: 1.2rem;
 }
-
 
 #map {
+  position: relative;
   margin-top: 20px;
 }
 
-
+/* 심부름 추가하기 버튼 */
 .add-errand-button {
-  position: absolute;      /* This ensures the button floats on top of other content */
-  top: 150px;               /* Adjust as needed to position from the top */
-  left: 20px;             /* Adjust as needed to position from the right */
+  position: absolute;     
+  top: 150px;               
+  left: 12px;             
   padding: 10px;
-  background-color: #3498db;
+  background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   z-index: 1000; 
+  &:hover {
+    background-color:#45a049;
+  }
 }
-
-
-
-
-
 
 
 .hover-container {
@@ -61,28 +60,50 @@
 .zoom-button-container {
   position: absolute;
   bottom: 20px;
-  left: 20px;
-  z-index: 100; /* Optional: To make sure the buttons appear above the map */
+  left: 5px;
+  z-index: 100;
 }
 
 .zoom-button {
+  width: auto;   
+  height: auto;  
+  font-size: 20px;  
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  background-color: #4CAF50;
+  border-radius: 4px;
+  cursor: pointer;
   margin: 5px;
-  padding: 10px 20px;
+  font-size: 0.8rem;
+}
+.zoom-button.returnToMyLocation {
+  height: 20px; 
+}
+.zoom-button:hover {
+  background-color: #45a049;
 }
 
+/* Nav 버튼 */
 .toggle-button {
   position: absolute;
   top: 40px;
-  right: 80px;
+  right: 5px;
   z-index: 100;
   cursor: pointer;
+  background-color: #4CAF50;
+  &:hover {
+    background-color:#45a049;
+  }
 }
 
+/* Nav 화면 */
 .right-nav {
   position: absolute;
-  top: 105px;
+  top: 125px;
   right: 0;
-  width: 200px;
+  width: 300px;
   height: 100%;
   background-color: #f2f2f2;
   z-index: 50;
@@ -91,13 +112,16 @@
   box-shadow: -2px 0 5px rgba(0,0,0,0.1);
   transition: background-color 0.3s ease-in-out, right 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
+.right-nav a { /* 밑줄 없애기 */
+  text-decoration: none;
+}
 
 .right-nav.open {
-  right: 0; /* Slide in the navigation bar when it's open */
+  right: 0; 
 }
 
 .right-nav h2 {
-  margin-top: 0;
+  margin-top: 10px;
 }
 
 .right-nav ul {
@@ -115,20 +139,88 @@
   gap: 10px;
 }
 
+/* 로그인 입력 부분 */
 .login-form input {
-  padding: 10px;
+  padding: 15px 30px;
+  padding-left: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-left: 0px;
 }
 
+
+/* 로그인 버튼 */
 .login-form button {
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  width : 300px;
+  margin-left: 0px;
+  &:hover {
+    background-color:#45a049;
+  }
 }
+
+/* 심부름 추가 모드 시 로그아웃 버튼 */
+.logout-form button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width : 300px;
+  margin-left: -1px;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+.signup-text {
+  margin-left: 0px;
+  margin-top: 10px;
+}
+
+.confirm-box {
+  position: absolute;
+  top: 10px; /* 상단에서 10px 떨어진 위치에 배치 */
+  left: 50%; /* 중앙 정렬을 위해 왼쪽에서 50% 위치에 배치 */
+  transform: translateX(-50%); /* 중앙 정렬 보정 */
+  background-color: rgba(255, 255, 255, 0.7); /* 배경색 (옵션) */
+  padding: 5px 10px; /* 패딩 (옵션) */
+  border-radius: 5px; /* 둥근 모서리 (옵션) */
+}
+
+/* 심부름 모드 해당위치 등록 버튼 */
+.confirm-location-button {
+  background-color:#4CAF50;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px; 
+  cursor: pointer; 
+  border-radius: 4px; 
+  margin-left: 0px;
+  margin-top: 20px;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+/* 심부름 추가모드 위/경도 표시 */
+.selected-position {
+  margin-left: 0px;
+}
+
+
+
+/* 마이페이지 부분 (Profile.js) */
 
 .profile-section {
   text-align: center;
@@ -136,13 +228,13 @@
 }
 
 .profile-picture {
-  width: 100px; /* 프로필 사진 크기 */
+  width: 130px;
   height: auto;
   border-radius: 50%; /* 원형 */
 }
 
 .profile-points {
-  margin-right: 1000px;
+  margin-left: -2000px;
   margin-top: -25px;
   font-size: 1.2rem;
   font-weight: bold;
@@ -154,16 +246,309 @@
   font-weight: bold;
 }
 
-.confirm-location-button {
-  background-color: transparent; /* Transparent background */
-  border: 2px solid #000; /* Add border, you can change color as needed */
-  color: #000; /* Text color, you can change as needed */
-  padding: 10px 20px; /* Padding for top/bottom, left/right */
-  text-align: center;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px; /* External margins */
-  cursor: pointer; /* Cursor changes to hand icon when you hover over it */
-  border-radius: 4px; /* Rounded corners */
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.3rem;
 }
+
+.activity-table th,
+.activity-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.activity-table tbody tr:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* 홈으로 돌아가기 버튼 */
+.home-button {
+  display: inline-block;
+  margin-top: 60px;  
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  position: relative; /* 버튼 중앙 위치 */
+  left: 50%;
+  transform: translateX(-50%);
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+/* 마이페이지 링크 밑줄 없애기 */
+.activity-table a {
+  text-decoration: none;
+}
+
+
+
+/* 심부름 등록 페이지 부분 (Errand_reg.js) */
+
+/* 게시하기 버튼 */
+.Errand-write button {
+  display: block;
+  width: 150px; /* 버튼의 폭을 설정합니다. 원하는 대로 조절할 수 있습니다. */
+  margin: 20px auto 0; /* 위에서 20px의 여백을 주고, 좌우 자동 마진으로 버튼을 중앙에 위치시킵니다. */
+  padding: 12px;
+  background-color:#4CAF50;
+  color: #FFF;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+.Errandwrite {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.Errand-write h2 {
+  color: #333;
+  margin-bottom: 20px;
+  margin-left: -15px;
+  text-align: center;
+}
+
+.Errand-write div {
+  margin-bottom: 15px;
+}
+
+.Errand-write label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.Errand-write input, .Errand-write textarea {
+  width: 96%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.Errand-write .reward input {
+  width: calc(100% - 90px); /* 포인트 라벨 길이만큼 제외 */
+}
+
+.Errand-write textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+
+/* 심부름 목록 페이지 부분 (Errandlist.js) */
+
+.errand-list h2 {
+  margin-left: 15px;
+}
+
+/* 상태 색상 스타일 */
+span[style='color: gray'] {
+  color: gray;
+}
+span[style='color: red'] {
+  color: red;
+}
+span[style='color: orange'] {
+  color: orange;
+}
+span[style='color: blue'] {
+  color: blue;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+/* 쪽지작성 버튼 */
+.Comment-submit button {
+  display: block;
+  width: 150px;
+  margin-left: 20px; 
+  background-color:#4CAF50;
+  color: #FFF;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+
+
+/* 심부름 상세정보 페이지 부분 (ErrandDet.js) */
+
+.errand-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.errand-detail h2 {
+  margin: 0;
+}
+
+.errand-detail button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color:#4CAF50;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+.errand-sure {
+  margin-top: 20px;
+}
+
+.Comment-submit {
+  margin-top: 30px;
+}
+
+.Comment-submit textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+
+
+/* 문의사항 목록 페이지 (QnaList.js) */
+
+.qna-list h2 {
+  margin-left: 15px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nodot {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 답변 영역 스타일링 */
+.qna-answer input[type="text"] {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* 답변제출 버튼 */
+.qna-answer button {
+  background-color: #4CAF50;
+  color:#fff;
+  border: none;
+  padding: 10px 15px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+/* 문의사항 작성하기 버튼 */
+.qnawrite button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 10px;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+
+/* 문의사항 작성 부분 (QnaDet.js) */
+
+.qna-det-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.qna-det-textarea {
+  width: 97%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: vertical; 
+}
+
+.qna-det-button {
+  padding: 8px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color:#45a049;
+  }
+}
+
+.qna-det-button:last-child {
+  margin-right: 0;
+}
+
+
+/* 내가 작성한 심부름 목록 페이지 (MyErrand.js) */
+
+.Myerrand-list h2 {
+  margin-left: 15px;
+}
+
+
+
+/* 결제 페이지 (Pay.js) */
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation} from 'react-router-dom';
+import './App.css';
 function Errand_reg() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -80,58 +81,63 @@ function Errand_reg() {
   };
   
   return (
-    <div>
-      <div>
-        <h2>게시글 작성</h2>
-        <div>
-          <label>제목:</label>
+    
+    <div className="Errandwrite">
+      <div className="Errand-write">
+        <h2>심부름 게시글 작성</h2>
+        <div className='title'>
+          <label>제목</label>
           <input 
             value={title} 
             onChange={(e) => setTitle(e.target.value)} 
+            placeholder="제목을 입력하세요"
           />
         </div>
-        <div>
-          <label>카테고리:</label>
+        <div className='category'>
+          <label>카테고리</label>
           <input 
             value={category} 
             onChange={(e) => setCategory(e.target.value)} 
+            placeholder="카테고리를 입력하세요"
           />
         </div>
-        <div>
-          <label>위치 정보:</label>
+        <div className='location'>
+          <label>위치 정보</label>
           <input 
             value={position} 
             readOnly
           />
         </div>
-        <div>
-          <label>보상 내용:</label>
+        <div className='reward'>
+          <label>보상 내용</label>
           <input 
             value={reward}
             type='number'
             onChange={(e) => setReward(e.target.value)} 
+            placeholder="보상 포인트를 입력하세요"
           /> 포인트
         </div>
         <div>
-    <label>유효 기간:</label>
-    <input 
-        type="datetime-local"
-        value={vtime}
-        onChange={(e) => setVtime(e.target.value)}
-    />
-</div>
-
-        <div>
-          <label>내용:</label>
-          <textarea 
-            value={content} 
-            onChange={(e) => setContent(e.target.value)} 
+          <label>유효 기간</label>
+          <input 
+            type="datetime-local"
+            value={vtime}
+            onChange={(e) => setVtime(e.target.value)}
           />
-        </div>
-        <button onClick={handleSubmit}>게시하기</button>
       </div>
-      
+
+      <div>
+        <label>내용</label>
+        <textarea 
+          value={content} 
+          onChange={(e) => setContent(e.target.value)} 
+          placeholder="심부름 상세 내용을 입력하세요"
+        />
+      </div>
+        <button onClick={handleSubmit}>게시하기</button>
     </div>
+      
+  </div>
   );
 }
 

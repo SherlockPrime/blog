@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import './App.css';
 
 function PostDetail() {
   const currentTime = new Date();
@@ -104,11 +105,10 @@ const handleCompleteTransaction = async () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'right' }}>
-                <h2>심부름 정보</h2>
-                <button onClick={navigateToList}>심부름 리스트로</button>
-                
-            </div>
+      <div className='errand-detail'>
+        <h2>심부름 정보</h2>
+        <button onClick={navigateToList}>심부름 목록</button>      
+      </div>
       <p>작성자: {postDetail.csm_id}</p>
       {postDetail ? (
         <div>
@@ -119,25 +119,25 @@ const handleCompleteTransaction = async () => {
           {postDetail.Customer_csm_id && <p style={{ color: 'red', fontWeight: 'bold' }}>심부름 진행자 : {postDetail.Customer_csm_id}</p>}
           {(!postDetail.Customer_csm_id && // 현재 심부름을 수행하고 있는 회원이 없어야 수락할 수 있고
               getCookie('id') !== postDetail.csm_id &&  // 심부름 제안자가 본인이 아니어야 수락할 수 있고
-                    ernd_vtime > currentTime) && // 유효기간이 지나지 않았어야 한다
-  <button onClick={() => handleAccept(postDetail.ernd_no)}>수락하기</button>}
+              ernd_vtime > currentTime) && // 유효기간이 지나지 않았어야 한다
+              <button onClick={() => handleAccept(postDetail.ernd_no)}>수락하기</button>}
           
           {postDetail.csm_id === getCookie('id') && postDetail.Customer_csm_id && !postDetail.ernd_acpt && ernd_vtime > currentTime &&
-      <div>
-        <button onClick={handleCompleteTransaction}>거래 성사</button>
-      </div>
-    }
+          <div className='errand-sure'>
+            <button onClick={handleCompleteTransaction}>거래 성사</button>
+          </div>
+          }
 
-        {postDetail.csm_id !== getCookie('id') && (
-  <div>
-    <textarea 
-      value={newComment}
-      onChange={(e) => setNewComment(e.target.value)}
-      placeholder="내용을 입력하세요..."
-    />
-    <button onClick={handleCommentSubmit}>쪽지 작성</button>
-  </div>
-)}
+          {postDetail.csm_id !== getCookie('id') && (
+          <div className='Comment-submit'>
+            <textarea 
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="내용을 입력하세요..."
+            />
+            <button onClick={handleCommentSubmit}>쪽지 작성</button>
+          </div>
+          )}
         </div>
       ) : (
         <p>Loading...</p>

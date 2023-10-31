@@ -272,17 +272,17 @@ app.get('/sendcomments/:userId', (req, res) => {
 
 app.post('/payment/ready', async (req, res) => {
   try {
-      const { amount } = req.body;
-
+      const { amount, userId } = req.body
+      console.log('id', userId);
       const headers = {
           'Authorization': 'KakaoAK af3f9cfee314d59416184f2c1830b7ed',
           'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       };
-
+      
       const data = {
           cid: 'TC0ONETIME',
           partner_order_id: 'partner_order_id',
-          partner_user_id: 'partner_user_id',
+          partner_user_id: userId,
           item_name: '포인트',
           quantity: '1',
           total_amount: amount,
@@ -299,6 +299,15 @@ app.post('/payment/ready', async (req, res) => {
       }
 
       const response = await axios.post('https://kapi.kakao.com/v1/payment/ready', formData, { headers: headers });
+      console.log('respnse data', response);
+      const query = "INSERT INTO charge( crg_amount, Customer_csm_id, tid, sucess) VALUES(?, ? ,? ,?)";
+
+      db.query(query, [amount, userId, response.data.tid, 0], (error, results) => {
+        if (error) {
+          return res.status(500).json({ success: false, message: 'Database Error', error: error.message });
+      }
+      
+    });
 
       res.json(response.data);
   } catch (error) {
@@ -310,6 +319,9 @@ app.post('/payment/ready', async (req, res) => {
 app.get('/payment/approve', async (req, res) => {
   try {
       const pg_token = req.query.pg_token;
+      const userId = req.cookies.id;
+      console.log('userId', userId);
+      console.log('cookie', req.cookies);
       console.log('Received pg_token:', pg_token);
 
       if (!pg_token) {
@@ -321,11 +333,33 @@ app.get('/payment/approve', async (req, res) => {
           'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
       };
 
+      const query = "SELECT tid,crg_amount FROM charge WHERE Customer_csm_id = ? order by crg_no DESC limit 1";
+      const {tid,amount} = await new Promise((resolve,reject) => {
+        
+        db.query(query, [userId], (error, results)=>{
+
+          if (error)
+          {
+            console.log(error);
+            reject("쿼리 에러");
+          }
+          else
+          {
+            resolve({tid:results[0].tid,amount: results[0].crg_amount});
+          }
+        
+        
+        });
+
+      })
+      
+      
       const data = {
         cid: 'TC0ONETIME',
         partner_order_id: 'partner_order_id',
-        partner_user_id: 'partner_user_id',
-       
+        partner_user_id: userId,
+        pg_token: pg_token,
+        tid: tid
         
     };
 
@@ -336,13 +370,38 @@ app.get('/payment/approve', async (req, res) => {
 
       const response = await axios.post('https://kapi.kakao.com/v1/payment/approve', formData, { headers: headers });
 
-      res.json(response.data);
+      const sql = "update charge set sucess = 1 where tid = ?";
+
+      db.query(sql, [tid]);
+
+      const sss = "update customer set csm_pt = csm_pt + ? where csm_id = ?";
+   
+      db.query(sss, [amount, userId]);
+
+
+      
+      
+      
+
+      res.redirect("https://localhost:3000/Pay");
   } catch (error) {
       console.error(error);
       res.status(500).send(error.message);
   }
 });
 
+app.get('/getPoints/:id', (req, res) => {
+  const userId = req.params.id;
+  db.query("SELECT csm_pt FROM customer where csm_id = ?", [userId], (err, rows) => {
+      if (err) {
+          res.status(400).json({ "error": err.message });
+          return;
+      }
+      res.json({
+          "points" : rows[0]?.csm_pt
+      });
+  });
+});
 // 모든 고객 정보를 가져오기
 app.get('/customers', (req, res) => {
     let sql = 'SELECT * FROM Customer';

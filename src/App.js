@@ -275,7 +275,7 @@ function getCookie(name) {
         <img src="./logo1.png" alt="Header" className="logo" />
         
         <div className="user-address">{userAddress}</div>
-        {isAddingErrand && <div className="confirm-box">지도에서 위치 확인</div>}
+        
       </div>
       <button className="toggle-button" onClick={toggleNav}>
         {isNavOpen ? 'Close Nav' : 'Open Nav'}
@@ -307,6 +307,7 @@ function getCookie(name) {
   </div>
 )}
       <div id="map" style={{ width: '100%', height: '80vh' }}>
+      {isAddingErrand && <div className="confirm-box">지도에서 위치 확인</div>}
       </div>
       {isLoggedIn && !isAddingErrand && ( // 로그인 상태이며, 심부름 추가 모드가 아닐 때
         <button className="add-errand-button" onClick={addErrand}>심부름 추가하기</button> 

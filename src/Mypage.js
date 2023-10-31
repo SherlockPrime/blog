@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Mypage.css';
+import './App.css';
 
 const Mypage = () => {
 
@@ -11,17 +11,17 @@ const Mypage = () => {
         <tbody>
           <tr>
             <td>
-              <Link to="/activity1">작성한 심부름</Link>
+              <Link to="/MyErrand">작성한 심부름</Link>
             </td>
           </tr>
           <tr>
             <td>
-              <Link to="/activity2">작성한 댓글</Link>
+              <Link to="/SendComment">발신 쪽지함</Link>
             </td>
           </tr>
           <tr>
             <td>
-              <Link to="/activity3">문의 사항</Link>
+              <Link to="/RecComment">수신 쪽지함</Link>
             </td>
           </tr>
           <tr>

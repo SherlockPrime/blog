@@ -122,6 +122,11 @@ const handleLogout = () => {
   setCsmName("");
 };
 
+function getCookie(name) {
+  var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return value? value[2] : null;
+}
+
   return (
     <div className="App">
       <div className="header">
@@ -133,11 +138,11 @@ const handleLogout = () => {
         {isNavOpen ? 'Close Nav' : 'Open Nav'}
       </button>
       {isNavOpen && (
-  <div className="right-nav">
-    {!isLoggedIn ? (
-      <div>
+        <div className="right-nav">
+          {!isLoggedIn ? (
+          <div>
         <h2>Login</h2>
-      <div className="login-form">
+        <div className="login-form">
         <input type="text" placeholder="아이디" value={username} onChange={(e) => setUsername(e.target.value)} onKeyPress={handleKeyPress}/>
         <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} onKeyPress={handleKeyPress}/>
         <button onClick={handleLogin}>로그인</button>
@@ -147,9 +152,11 @@ const handleLogout = () => {
     ) : (
       <div>
         <ul>
+        <li>{getCookie('id')} 님 안녕하세요</li>
+          <br></br>
           <li><Link to = "/Profile">My Page</Link></li>
-          <li>심부름 목록</li>
-          <li>문의사항</li>
+          <li><Link to = "/Errandlist">심부름 목록</Link></li>
+          <li><Link to = "/QnaList">문의사항</Link></li>
         </ul>
         <button onClick={handleLogout}>로그아웃</button>
       </div>
