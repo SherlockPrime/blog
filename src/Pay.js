@@ -271,7 +271,6 @@ const Pay = () => {
       <div>
         <ul>
         <li>{getCookie('id')} 님 안녕하세요</li>
-          <br></br>
           <li><Link to = "/Profile">My Page</Link></li>
           <li><Link to = "/Errandlist">심부름 목록</Link></li>
           <li><Link to = "/QnaList">문의사항</Link></li>
